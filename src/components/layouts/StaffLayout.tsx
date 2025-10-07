@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Package, LogOut, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import { useSync } from '@/hooks/use-sync';
 
 interface StaffLayoutProps {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ interface StaffLayoutProps {
 export function StaffLayout({ children }: StaffLayoutProps) {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { isSyncing, sync } = useSync();
 
   const handleLogout = () => {
     logout();
@@ -32,6 +34,9 @@ export function StaffLayout({ children }: StaffLayoutProps) {
               </div>
               <span className="font-medium">{user?.name}</span>
             </div>
+            <Button variant="outline" size="sm" onClick={sync} disabled={isSyncing}>
+              {isSyncing ? 'Syncing...' : 'Sync'}
+            </Button>
             
             <Button variant="ghost" size="icon" onClick={handleLogout}>
               <LogOut className="h-5 w-5" />
