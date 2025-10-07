@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import { useSync } from '@/hooks/use-sync';
 import { cn } from '@/lib/utils';
 
 interface AdminLayoutProps {
@@ -24,6 +25,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { isSyncing, sync } = useSync();
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -145,6 +147,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 day: 'numeric' 
               })}
             </span>
+            <Button onClick={sync} disabled={isSyncing} variant="outline" size="sm">
+              {isSyncing ? 'Syncing...' : 'Sync'}
+            </Button>
           </div>
         </header>
 
